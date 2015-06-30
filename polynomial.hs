@@ -3,13 +3,16 @@ module HW04 where
 import Data.List
 newtype Poly a = P [a]
 
+
 {- A polynomial typeclass, represented as lists.
    The first element is the constant term, the 
    second element is the linear term, and so on. -}
+   
 
 {- x is a polynomial of degree 1, so it should be represented as 1x + 0 -}
 x :: Num a => Poly a
 x = P [0,1]
+
 
 {- Allows checking for polynomial equality.
    Trivial if they do not have the same number of terms. -}
@@ -66,6 +69,7 @@ plus (P f) (P g)
 addZero :: Num a => Int -> [a] -> [a]
 addZero 0 poly = poly
 addZero n poly = (addZero (n - 1) poly) ++ [0]  
+
  
 {- Allows for polynomials to be multiplied.
    If you multiply two polynomials, f and g, 
@@ -79,6 +83,7 @@ addZero n poly = (addZero (n - 1) poly) ++ [0]
 times :: Num a => Poly a -> Poly a -> Poly a
 times (P []) _ = 0
 times (P (y:ys)) (P f) = (P (map (*y) f)) + times (P ys) (P (0:f))
+
 
 {- The 6 operations any "number" should have, 
    as applied to polynomials. We are only 
@@ -95,6 +100,7 @@ instance Num a => Num (Poly a) where
     abs    = undefined
     signum = undefined
 
+
 {- Takes a polynomial and a value, and evaluates 
    the polynomial at that value. -}
 applyP :: Num a => Poly a -> a -> a
@@ -103,6 +109,7 @@ applyP (P [n]) _ = n
 applyP (P f) n   = (last f) * (n ^ (power f)) + applyP (P g) n  
                  where power h = length h - 1
                        g       = init f
+
 
 {- Defines the Diffrentiable type class, and defines the 
    nderiv function, which takes the nth deriviative of a 
@@ -115,6 +122,7 @@ class Num a => Differentiable a where
         | n == 0    = f
         | n == 1    = deriv f
         | otherwise = deriv $ nderiv (n-1) f
+
 
 {- Takes the derivative of a polynomial using the power rule. -}
 instance Num a => Differentiable (Poly a) where
