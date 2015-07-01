@@ -35,16 +35,16 @@ instance (Num a, Eq a, Show a) => Show (Poly a) where
 showReverse :: (Num a, Eq a, Show a) => [a] -> String    
 showReverse [] = error "Not a valid polynomial."
 showReverse f@(y:ys)  
-    | allZero f          = "0"
-    | y == 0             = recurse
-    | ys == [] && y /= 0 = show y
-    | y == 1 && small    = "x" ++ " + " ++ recurse
-    | small              = show y ++ "x + " ++ recurse
-    | y == 1             = "x^" ++ power ++ " + " ++ recurse
-    | otherwise          = show y ++ "x^" ++ power ++ " + " ++ recurse
-         where power     = show (length f - 1) 
-               recurse   = showReverse ys
-               small     = length ys == 1 
+    | allZero f         = "0"
+    | y == 0            = recurse
+    | null ys && y /= 0 = show y
+    | y == 1 && small   = "x" ++ " + " ++ recurse
+    | small             = show y ++ "x + " ++ recurse
+    | y == 1            = "x^" ++ power ++ " + " ++ recurse
+    | otherwise         = show y ++ "x^" ++ power ++ " + " ++ recurse
+         where power    = show (length f - 1) 
+               recurse  = showReverse ys
+               small    = length ys == 1 
 
 {- Checks if the list is all zeroes. -}
 allZero :: (Num a, Eq a, Show a) => [a] -> Bool
