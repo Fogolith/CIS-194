@@ -4,20 +4,16 @@
    i.e. The first element is a list containing every element, 
    The second element is a list containing every second element, and so on.-}
 skips :: [a] -> [[a]]
-skips []  = [[]]
-skips lst = zipWith (nth) [1..(length lst)] (listception (length lst) lst)
+skips lst = map (nth $ index lst) [1..l]
+          where l = length lst
+          
+nth :: [(a,Int)] -> Int -> [a]
+nth lst n = (map fst . filter (\x -> (snd x) `mod` n == 0)) lst
 
-{- Takes an integer n, and a list, and returns a list of n copies of the original list. -}
-listception :: Int -> [a] -> [[a]]
-listception n lst
-    | n < 1  = [[]]
-    | n == 1 = [lst]
-    | n > 1  = [lst] ++ listception (n-1) lst 
-
-{- Takes an integer n, and a list, and returns a list with every nth element. -}
-nth :: Int -> [a] -> [a]
-nth _ []  = []
-nth n lst = take 1 (drop (n-1) lst) ++ (nth n (drop n lst))
+index :: [a] -> [(a,Int)]
+index lst = zipWith pair lst [1..l]
+          where l = length lst
+                pair x y = (x,y)           
 
 
 {- A local maximum is an element of a list that is strictly greater than the element
